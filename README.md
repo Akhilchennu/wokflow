@@ -1,5 +1,32 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+App Operations
+Login screen 
+Get all workflows screen
+Create/Edit a workflow screen
+View/Shuffle a completed workflow in the Create/Edit workflow screen
+
+Workflows & Nodes
+A workflow consists of nodes, arranged in sequential order. Workflows can have only two states, completed or pending. 
+Each node has two attributes, which can be filled by a user - Title & Content. And three states, which can be modified by a user: Pending, In Progress & Completed.
+
+Rules & Requirements
+A workflow should be considered complete only if all its nodes are in the Completed state. Workflow state is toggleable from the workflow home screen provided it meets the above criteria.
+In a workflow there should be no Pending node before a Completed node, i.e nodes can be moved to Completed state only in the same sequential order as they are present in the workflow.
+All the nodes in a workflow should editable at all times.
+In a workflow, there should not be an empty node.
+In a workflow, nodes should be added or deleted only at the end of the sequence.
+If a workflow is in a Completed state, the user should be able to perform an action called ‘shuffle’ which will shuffle the order of the nodes in the workflow. The shuffle action should only be visible for Completed workflows.  
+
+UI References 
+Use the following screens as the reference, comments are add inline to help you understand the requirements & functionality. You are required to implement the functionality as mentioned in the following references. 
+Login Screen:  https://imgur.com/JnHbfW
+Workflow Home Screen - Get all workflows screen: https://imgur.com/kwQjp0S
+Workflow Create/Edit Screen: https://imgur.com/JpppsDy
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
