@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VpnKeySharpIcon from '@material-ui/icons/VpnKeySharp';
+import { useDispatch  } from "react-redux";
 import validator from 'validator';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [userEmail, setUserEmail] = useState();
   const [userPassword, setUserPassword] = useState();
@@ -106,6 +108,10 @@ const Login = (props) => {
     } else if (userPassword.length < 8) {
       setPasswordError('min length of password is 8');
     } else if (userEmail && userPassword && !emailError && !passwordError) {
+      dispatch({
+        type: "AUTHENTICATE",
+        login: true
+      })
       props.history.push('/dashboard');
     }
   }
