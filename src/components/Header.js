@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#a900b0',
         boxSizing: 'border-box',
         display: 'block',
-        padding:'16px' 
+        padding:'16px' ,
+        border:'0.5px solid #00000030'
     },
     heading:{
         float:'left',

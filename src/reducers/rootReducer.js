@@ -1,5 +1,5 @@
 const initialState = {
-    loginSession: false
+    loginSession: false,workFlow:{},workFlowId:'',workFlowName:''
 }
 
 const rootReducer=(state = initialState, action)=> {
@@ -9,6 +9,17 @@ const rootReducer=(state = initialState, action)=> {
                     ...state,
                     loginSession: action.login
                 }
+        case "UPDATEWORKFLOW":
+              return{
+                  ...state,
+                  workFlow:action.updatedWorkFlow
+              }
+        case "TASKDATA":
+            return{
+                 ...state,
+                 workFlowId:action.updatedWorkFlowId,
+                 workFlowName:action.updatedWorkFlowname
+               }
         default:
             return state
     }

@@ -20,3 +20,10 @@ body, html, #root{
 .font{
   font-size: 1rem;
 }
+
+.iconStyle{
+    left:18px;
+    bottom:10px;
+    position:relative;
+    float:right;
+}
