@@ -4,5 +4,15 @@ body, html, #root{
 }
 
 #root{
-  margin:12px
+  margin:0px 12px;
+}
+
+.paperStyle{
+  width: 30%;
+}
+
+@media only screen and (max-width:475px){
+  .paperStyle{
+    width: 100%;
+  }
 }
