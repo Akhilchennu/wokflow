@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function App() {
+const Header=(props)=> {
 
     const classes = useStyles();
   
@@ -35,4 +35,4 @@ function App() {
   );
 }
 
-export default App;
+export default Header;
