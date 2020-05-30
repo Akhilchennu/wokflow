@@ -16,3 +16,7 @@ body, html, #root{
     width: 100%;
   }
 }
+
+.font{
+  font-size: 1rem;
+}

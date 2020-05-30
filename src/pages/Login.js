@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VpnKeySharpIcon from '@material-ui/icons/VpnKeySharp';
-import { useDispatch  } from "react-redux";
+import { useDispatch } from "react-redux";
 import validator from 'validator';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   checkboxStyle: {
     float: 'left',
     marginBottom: '24px'
+  },
+  link: {
+    marginLeft: '5px'
   }
 }));
 
@@ -178,6 +181,7 @@ const Login = (props) => {
             onKeyPress={(event) => fieldKeyPress(event)}>
             Login
             </Button>
+          <div className={`${classes.marginTop24} font`}><span>Don't Have an account?.</span><a className={classes.link} href="/">Sign up here</a></div>
         </div>
       </Paper>
     </div>
