@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from "react-redux";
 import Nomessages from '../components/Nomessage';
 import WorkFowContainer from '../components/WorkFlowContainer';
+import { useBeforeunload } from 'react-beforeunload';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -171,6 +172,9 @@ const WorkFlow = (props) => {
         }
         setFilterValue(filter)
     }
+
+    useBeforeunload(() => "All Data will be lost and you will be redirected to login");
+
 
     return (
         <div>

@@ -10,16 +10,19 @@ const useStyles = makeStyles((theme) => ({
         height: '64px',
         backgroundColor: '#a900b0',
         boxSizing: 'border-box',
-        display: 'block',
+        display: 'flex',
+        alignItems:'center',
         padding:'16px' ,
         border:'0.5px solid #00000030'
     },
     heading:{
         float:'left',
         margin:0,
-        color:'#fff'
+        color:'#fff',
+        marginLeft: theme.spacing(1),
     },
     logOut:{
+        marginLeft:'auto',
         float:'right',
         backgroundColor:'#fff',
         textTransform:'capitalize',
@@ -42,6 +45,7 @@ const Header=(props)=> {
   
   return (
     <header className={classes.header}>
+    <img src={require('../asserts/flowicon.png')}  alt="FlowApp icon"></img> 
     <h3 className={classes.heading}>FLOWAPP</h3>
     {loginSession?<Button variant="contained" className={classes.logOut} onClick={()=>logOut()}>Logout</Button>:null}
     </header>
