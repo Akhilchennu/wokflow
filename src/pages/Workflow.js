@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from "react-redux";
 import Nomessages from '../components/Nomessage';
-import WorkFowContainer from '../components/WorkFlowContainer'
+import WorkFowContainer from '../components/WorkFlowContainer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 120,
         bottom: '10px'
     },
-    create:{
-        textTransform:'capitalize',
-        padding:'24px',
-        backgroundColor:'#14bc50',
-        marginLeft:'auto',
+    create: {
+        textTransform: 'capitalize',
+        padding: '24px',
+        backgroundColor: '#14bc50',
+        marginLeft: 'auto',
         '&:hover': {
             backgroundColor: '#14bc50'
-          }
+        }
     },
     container: {
         display: 'flex',
@@ -64,60 +64,112 @@ const WorkFlow = (props) => {
 
     const workFlow = useSelector(state => state.workFlow || {});
 
-    const[WorkFlowData,setWorkFlowData]=useState(workFlow)
+    const [WorkFlowData, setWorkFlowData] = useState(workFlow);
+
+    const [filterValue, setFilterValue] = useState("ALL");
+
+    const [searchdataValue, setSeachValue] = useState('')
 
     const dispatch = useDispatch();
 
-    const createWorkflow=(event)=>{
-        const workData={...WorkFlowData};
-        const workFlowId=uuidv4();
-        const workFlowName='';
-        workData[workFlowId]={
-            workFlowName:'',
+    const createWorkflow = (event) => {
+        const workData = { ...workFlow };
+        const workFlowId = uuidv4();
+        const workFlowName = '';
+        workData[workFlowId] = {
+            workFlowName: '',
             workFlowId,
-            taskData:[],
-            workFlowStatus:'PENDING'
+            taskData: [],
+            workFlowStatus: 'PENDING'
         }
         dispatch({
             type: "UPDATEWORKFLOW",
             updatedWorkFlow: workData
         })
         dispatch({
-            type:"TASKDATA",
-            updatedWorkFlowId:workFlowId,
-            updatedWorkFlowname:workFlowName
+            type: "TASKDATA",
+            updatedWorkFlowId: workFlowId,
+            updatedWorkFlowname: workFlowName
         })
         setWorkFlowData(workData)
         props.history.push('/create');
     }
 
-    const deleteData=(deleteId)=>{
-        const data={...WorkFlowData}
+    const deleteData = (deleteId) => {
+        const data = { ...workFlow }
         delete data[deleteId];
+        const previousData = { ...WorkFlowData }
+        delete previousData[deleteId];
+        setWorkFlowData(previousData)
         dispatch({
             type: "UPDATEWORKFLOW",
             updatedWorkFlow: data
         })
-    setWorkFlowData(data)
     }
 
-    const modifyStatus=(statusId,status)=>{
-        const data={...WorkFlowData};
-        data[statusId].workFlowStatus=status;
+    const modifyStatus = (statusId, status) => {
+        const data = { ...workFlow };
+        data[statusId].workFlowStatus = status;
+        const previousData = { ...WorkFlowData }
+        previousData[statusId].workFlowStatus = status;
+        setWorkFlowData(previousData)
         dispatch({
             type: "UPDATEWORKFLOW",
             updatedWorkFlow: data
         })
-        setWorkFlowData(data)
     }
 
-    const cardClick=(id,name)=>{
+    const cardClick = (id, name) => {
         dispatch({
-            type:"TASKDATA",
-            updatedWorkFlowId:id,
-            updatedWorkFlowname:name
+            type: "TASKDATA",
+            updatedWorkFlowId: id,
+            updatedWorkFlowname: name
         })
         props.history.push('/create');
+    }
+
+
+    const searchValue = (event) => {
+        const input = event.target.value;
+
+        if (input === "") {
+            setWorkFlowData(workFlow);
+        } else {
+            const searchObj = {}
+            for (let key in workFlow) {
+                if (workFlow[key].workFlowName.toLowerCase().indexOf(input.toLowerCase()) !== -1) {
+                    searchObj[key] = workFlow[key]
+                }
+            }
+            setWorkFlowData(searchObj);
+        }
+        setSeachValue(input);
+    }
+
+    const handleFilterChange = (event) => {
+        setSeachValue('')
+        const filter = event.target.value;
+        if (filter === 'ALL') {
+            setWorkFlowData(workFlow);
+        } else if (filter === 'PENDING') {
+            const searchObj = {}
+            for (let key in workFlow) {
+                if (workFlow[key].workFlowStatus === "PENDING") {
+                    searchObj[key] = workFlow[key]
+                }
+            }
+            setWorkFlowData(searchObj);
+
+        } else if (filter === "COMPLETED") {
+            const searchObj = {}
+            for (let key in workFlow) {
+                if (workFlow[key].workFlowStatus === "COMPLETED") {
+                    searchObj[key] = workFlow[key]
+                }
+            }
+            setWorkFlowData(searchObj);
+        }
+        setFilterValue(filter)
     }
 
     return (
@@ -131,6 +183,8 @@ const WorkFlow = (props) => {
                         className={classes.input}
                         placeholder="Search Workflows"
                         inputProps={{ 'aria-label': 'search Workflows' }}
+                        onChange={(event) => searchValue(event)}
+                        value={searchdataValue}
                     />
                 </Paper>
                 <FormControl variant="outlined" className={classes.formControl}>
@@ -138,8 +192,8 @@ const WorkFlow = (props) => {
                     <Select
                         labelId="filter_label"
                         id="filter"
-                        // value={age}
-                        // onChange={handleChange}
+                        value={filterValue}
+                        onChange={(event) => handleFilterChange(event)}
                         label="Filter"
                     >
                         <MenuItem value={"ALL"}>ALL</MenuItem>
@@ -151,20 +205,20 @@ const WorkFlow = (props) => {
                     variant="contained" color="primary"
                     startIcon={<AddIcon />}
                     className={`${classes.create}`}
-                    onClick={(event)=>createWorkflow(event)}
-                    >
+                    onClick={(event) => createWorkflow(event)}
+                >
                     Create Workflow
             </Button>
             </Paper>
             <div className={classes.container}>
-            {Object.keys(WorkFlowData).length>0?Object.keys(WorkFlowData).map((data,index)=>{
-                   return <WorkFowContainer data={WorkFlowData[data]} key={WorkFlowData[data].workFlowId}
-                    indexValue={index} deleteData={(deleteId)=>deleteData(deleteId)}
-                    modifyStatus={(statusId,status)=>modifyStatus(statusId,status)}
-                    cardClick={(id,name)=>cardClick(id,name)}/>
-            }):
-             <Nomessages message="Create WorkFlow" />}
-             </div>
+                {Object.keys(WorkFlowData).length > 0 ? Object.keys(WorkFlowData).map((data, index) => {
+                    return <WorkFowContainer data={WorkFlowData[data]} key={WorkFlowData[data].workFlowId}
+                        indexValue={index} deleteData={(deleteId) => deleteData(deleteId)}
+                        modifyStatus={(statusId, status) => modifyStatus(statusId, status)}
+                        cardClick={(id, name) => cardClick(id, name)} />
+                }) :
+                    <Nomessages message="Create WorkFlow" />}
+            </div>
         </div>
     );
 }
