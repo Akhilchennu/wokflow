@@ -36,7 +36,7 @@ const WorkFlowContainer=(props)=>{
     const classes = useStyles();
 
     const [show,setShow]=useState("hidden");
-    const {data:{workFlowName,workFlowId,workFlowStatus,taskData},indexValue,
+    const {data:{workFlowName,workFlowId,workFlowStatus,taskData},
     deleteData,modifyStatus,cardClick}=props;
 
     const deleteClick=()=>{

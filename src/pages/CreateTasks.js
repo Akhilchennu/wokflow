@@ -11,6 +11,7 @@ import Nomessages from '../components/Nomessage';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
+import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
     mainBlock: {
@@ -61,7 +62,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginTop: '24px'
-    }
+    },
+    show:{
+        display:'flex'
+    },
+    hide:{
+        display:'none'
+    } 
 }));
 
 const CreateTasks = (props) => {
@@ -69,7 +76,7 @@ const CreateTasks = (props) => {
     const classes = useStyles();
     const workFlowId = useSelector(state => state.workFlowId);
     const WorkFlowData = useSelector(state => state.workFlow);
-    const { workFlowName, taskData } = WorkFlowData[workFlowId];
+    const { workFlowName, taskData,workFlowStatus } = WorkFlowData[workFlowId];
     const [tasks, setTasks] = useState(taskData);
     const [name, setName] = useState(workFlowName);
     const [nameError, setNameError] = useState();
@@ -124,6 +131,17 @@ const CreateTasks = (props) => {
             const updatedData = { ...WorkFlowData };
             updatedData[workFlowId].workFlowName = name;
             updatedData[workFlowId].taskData = tasks;
+            if(workFlowStatus === 'COMPLETED'){
+                let done=true;
+                for(let i=0;i<tasks.length;i++){
+                    if(tasks[i].taskStatus !=="completed"){
+                        done=false;
+                    }
+                }
+                if(!done){
+                    updatedData[workFlowId].workFlowStatus="PENDING"
+                }
+            }
             dispatch({
                 type: "UPDATEWORKFLOW",
                 updatedWorkFlow: updatedData
@@ -138,7 +156,9 @@ const CreateTasks = (props) => {
     }
 
     const shuffleTask = () => {
-
+      const data=[...tasks];
+      const shuffleData=_.shuffle(data);
+      setTasks(shuffleData);
     }
 
     const modifyData = (data, index) => {
@@ -174,7 +194,7 @@ const CreateTasks = (props) => {
                 />
                 <Button
                     variant="contained" color="primary"
-                    className={`${classes.shuffle}`}
+                    className={`${classes.shuffle} ${workFlowStatus==="COMPLETED"?classes.show:classes.hide}`}
                     startIcon={<ShuffleIcon />}
                     onClick={() => shuffleTask()}
                 >
