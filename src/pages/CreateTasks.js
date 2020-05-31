@@ -11,6 +11,9 @@ import Nomessages from '../components/Nomessage';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         marginTop: '24px'
     },
-    show:{
-        display:'flex'
+    show: {
+        display: 'flex'
     },
-    hide:{
-        display:'none'
-    } 
+    hide: {
+        display: 'none'
+    }
 }));
 
 const CreateTasks = (props) => {
@@ -76,11 +79,12 @@ const CreateTasks = (props) => {
     const classes = useStyles();
     const workFlowId = useSelector(state => state.workFlowId);
     const WorkFlowData = useSelector(state => state.workFlow);
-    const { workFlowName, taskData,workFlowStatus } = WorkFlowData[workFlowId];
+    const { workFlowName, taskData, workFlowStatus } = WorkFlowData[workFlowId];
     const [tasks, setTasks] = useState(taskData);
     const [name, setName] = useState(workFlowName);
     const [nameError, setNameError] = useState();
     const [addError, setaddError] = useState(false);
+    const [open, setOpen] =useState(false);
 
     const setWorkFlowName = (event) => {
         setName(event.target.value);
@@ -124,22 +128,24 @@ const CreateTasks = (props) => {
             setaddError(true);
             const taskData = [...tasks];
             setTasks(taskData);
-        } else if (!name && length === 0) {
+        } else if (!name) {
             setNameError("please provide workflow name");
+        } else if (length === 0) {
+            setOpen(true)
         } else {
             setNameError();
             const updatedData = { ...WorkFlowData };
             updatedData[workFlowId].workFlowName = name;
             updatedData[workFlowId].taskData = tasks;
-            if(workFlowStatus === 'COMPLETED'){
-                let done=true;
-                for(let i=0;i<tasks.length;i++){
-                    if(tasks[i].taskStatus !=="completed"){
-                        done=false;
+            if (workFlowStatus === 'COMPLETED') {
+                let done = true;
+                for (let i = 0; i < tasks.length; i++) {
+                    if (tasks[i].taskStatus !== "completed") {
+                        done = false;
                     }
                 }
-                if(!done){
-                    updatedData[workFlowId].workFlowStatus="PENDING"
+                if (!done) {
+                    updatedData[workFlowId].workFlowStatus = "PENDING"
                 }
             }
             dispatch({
@@ -147,18 +153,26 @@ const CreateTasks = (props) => {
                 updatedWorkFlow: updatedData
             })
             dispatch({
-                type:"TASKDATA",
-                updatedWorkFlowId:'',
-                updatedWorkFlowname:''
+                type: "TASKDATA",
+                updatedWorkFlowId: '',
+                updatedWorkFlowname: ''
             })
             props.history.push('/dashboard');
         }
     }
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
     const shuffleTask = () => {
-      const data=[...tasks];
-      const shuffleData=_.shuffle(data);
-      setTasks(shuffleData);
+        const data = [...tasks];
+        const shuffleData = _.shuffle(data);
+        setTasks(shuffleData);
     }
 
     const modifyData = (data, index) => {
@@ -175,6 +189,7 @@ const CreateTasks = (props) => {
     const propageteError = () => {
         setaddError(true)
     }
+
     return (
         <div>
             <Paper elevation={3} className={classes.mainBlock}>
@@ -194,7 +209,7 @@ const CreateTasks = (props) => {
                 />
                 <Button
                     variant="contained" color="primary"
-                    className={`${classes.shuffle} ${workFlowStatus==="COMPLETED"?classes.show:classes.hide}`}
+                    className={`${classes.shuffle} ${workFlowStatus === "COMPLETED" ? classes.show : classes.hide}`}
                     startIcon={<ShuffleIcon />}
                     onClick={() => shuffleTask()}
                 >
@@ -232,6 +247,23 @@ const CreateTasks = (props) => {
                         propageteError={() => propageteError()} />
                 }) : <Nomessages message="Add tasks" />}
             </div>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={open}
+                autoHideDuration={1000}
+                onClose={handleClose}
+                message="Add tasks to save"
+                action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
         </div>
     );
 }

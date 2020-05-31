@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import TextField from '@material-ui/core/TextField';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -75,7 +76,9 @@ const WorkFlowContainer=(props)=>{
 
     return(
       <Paper className={classes.container} onClick={()=>workCardClick()} onMouseOver={()=>setShow("visible")} onMouseLeave={()=>setShow("hidden")}>
+          <Tooltip title="Delete" aria-label="Delete">
           <HighlightOffIcon className={`${classes.delete} iconStyle`} visibility={show} onClick={(event)=>deleteClick(event)}/>
+          </Tooltip>
       <TextField
                 type="text"
                 disabled
