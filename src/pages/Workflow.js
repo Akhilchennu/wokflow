@@ -97,6 +97,15 @@ const WorkFlow = (props) => {
         })
     }
 
+    const modifyStatus=(statusId,status)=>{
+        const data={...WorkFlowData};
+        data[statusId].workFlowStatus=status;
+        dispatch({
+            type: "UPDATEWORKFLOW",
+            updatedWorkFlow: data
+        })
+    }
+
     console.log(WorkFlowData)
     return (
         <div>
@@ -137,7 +146,8 @@ const WorkFlow = (props) => {
             <div className={classes.container}>
             {Object.keys(WorkFlowData).length>0?Object.keys(WorkFlowData).map((data,index)=>{
                    return <WorkFowContainer data={WorkFlowData[data]} key={WorkFlowData[data].workFlowId}
-                    indexValue={index} deleteData={(deleteId)=>deleteData(deleteId)}/>
+                    indexValue={index} deleteData={(deleteId)=>deleteData(deleteId)}
+                    modifyStatus={(statusId,status)=>modifyStatus(statusId,status)}/>
             }):
              <Nomessages message="Create WorkFlow" />}
              </div>

@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     },
     name:{
         paddingTop:'16px'
+    },
+    delete:{
+        fill:'#fd072a'
     }
 }));
 
@@ -33,15 +36,37 @@ const WorkFlowContainer=(props)=>{
     const classes = useStyles();
 
     const [show,setShow]=useState("hidden");
-    const {data:{workFlowName,workFlowId,workFlowStatus},indexValue,deleteData}=props;
+    const {data:{workFlowName,workFlowId,workFlowStatus,taskData},indexValue,deleteData,modifyStatus}=props;
 
     const deleteClick=()=>{
         deleteData(workFlowId);
     }
 
+    const statusClick=()=>{
+        let status='PENDING'
+        if(workFlowStatus === 'PENDING'){
+            let  done=true;
+            for(let i=0;i<taskData.length;i++){
+                 if(taskData[i].taskStatus !== 'completed'){
+                     done=false;
+                     break;
+                 }
+            }
+             if(done){
+                 status='COMPLETED';
+             }
+        }else if(workFlowStatus === 'COMPLETED'){
+            status='PENDING'
+        }
+
+        if(workFlowStatus !== status){
+            modifyStatus(workFlowId,status);
+        }
+    }
+
     return(
       <Paper className={classes.container} onMouseOver={()=>setShow("visible")} onMouseLeave={()=>setShow("hidden")}>
-          <HighlightOffIcon className="iconStyle" visibility={show} onClick={()=>deleteClick()}/>
+          <HighlightOffIcon className={`${classes.delete} iconStyle`} visibility={show} onClick={()=>deleteClick()}/>
       <TextField
                 type="text"
                 disabled
@@ -52,7 +77,7 @@ const WorkFlowContainer=(props)=>{
             />
       <div className={classes.margintop}>
       <span>{workFlowStatus}</span>
-      <CheckCircleIcon className={`${classes[workFlowStatus]} floatStyle`}/>
+      <CheckCircleIcon className={`${classes[workFlowStatus]} floatStyle`} onClick={()=>statusClick()}/>
       </div>
       </Paper>    
     );
