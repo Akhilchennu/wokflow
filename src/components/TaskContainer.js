@@ -57,7 +57,6 @@ const TaskContainer = (props) => {
         if (tasks[indexValue].taskName === '' || !tasks[indexValue].taskName) {
             propageteError();
         } else {
-            const status = taskStatus === 'pending' ? 'inprogress' : taskStatus === 'inprogress' ? 'completed' : 'pending';
             const updateData = [...tasks];
             if (taskStatus === 'completed') {
                 if (updateData.length > 0) {

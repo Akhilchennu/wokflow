@@ -13,6 +13,8 @@ import AddIcon from '@material-ui/icons/Add';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from "react-redux";
+import Nomessages from '../components/Nomessage';
+import WorkFowContainer from '../components/WorkFlowContainer'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: '#14bc50'
           }
+    },
+    container: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: '24px'
     }
 }));
 
@@ -65,7 +73,8 @@ const WorkFlow = (props) => {
         workData[workFlowId]={
             workFlowName:'',
             workFlowId,
-            taskData:[]
+            taskData:[],
+            workFlowStatus:'PENDING'
         }
         dispatch({
             type: "UPDATEWORKFLOW",
@@ -79,6 +88,16 @@ const WorkFlow = (props) => {
         props.history.push('/create');
     }
 
+    const deleteData=(deleteId)=>{
+        const data={...WorkFlowData}
+        delete data[deleteId];
+        dispatch({
+            type: "UPDATEWORKFLOW",
+            updatedWorkFlow: data
+        })
+    }
+
+    console.log(WorkFlowData)
     return (
         <div>
             <Paper elevation={3} className={classes.mainBlock}>
@@ -115,6 +134,13 @@ const WorkFlow = (props) => {
                     Create Workflow
             </Button>
             </Paper>
+            <div className={classes.container}>
+            {Object.keys(WorkFlowData).length>0?Object.keys(WorkFlowData).map((data,index)=>{
+                   return <WorkFowContainer data={WorkFlowData[data]} key={WorkFlowData[data].workFlowId}
+                    indexValue={index} deleteData={(deleteId)=>deleteData(deleteId)}/>
+            }):
+             <Nomessages message="Create WorkFlow" />}
+             </div>
         </div>
     );
 }

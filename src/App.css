@@ -26,4 +26,9 @@ body, html, #root{
     bottom:10px;
     position:relative;
     float:right;
+    cursor: pointer;
+}
+
+.floatStyle{
+  float:right;
 }

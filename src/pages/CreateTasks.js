@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateTasks = (props) => {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const workFlowId = useSelector(state => state.workFlowId);
     const WorkFlowData = useSelector(state => state.workFlow);
@@ -81,7 +82,7 @@ const CreateTasks = (props) => {
 
     const addTask = () => {
         const length = tasks.length;
-        if (length > 0 && tasks[length - 1].taskName !== '' || length === 0) {
+        if ((length > 0 && tasks[length - 1].taskName !== '') || length === 0) {
             const id = uuidv4();
             const taskName = '';
             const taskDescription = '';
@@ -123,6 +124,15 @@ const CreateTasks = (props) => {
             const updatedData = { ...WorkFlowData };
             updatedData[workFlowId].workFlowName = name;
             updatedData[workFlowId].taskData = tasks;
+            dispatch({
+                type: "UPDATEWORKFLOW",
+                updatedWorkFlow: updatedData
+            })
+            dispatch({
+                type:"TASKDATA",
+                updatedWorkFlowId:'',
+                updatedWorkFlowname:''
+            })
             props.history.push('/dashboard');
         }
     }
