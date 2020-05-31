@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -62,7 +62,9 @@ const WorkFlow = (props) => {
 
     const classes = useStyles();
 
-    const WorkFlowData = useSelector(state => state.workFlow || {});
+    const workFlow = useSelector(state => state.workFlow || {});
+
+    const[WorkFlowData,setWorkFlowData]=useState(workFlow)
 
     const dispatch = useDispatch();
 
@@ -85,6 +87,7 @@ const WorkFlow = (props) => {
             updatedWorkFlowId:workFlowId,
             updatedWorkFlowname:workFlowName
         })
+        setWorkFlowData(workData)
         props.history.push('/create');
     }
 
@@ -95,6 +98,7 @@ const WorkFlow = (props) => {
             type: "UPDATEWORKFLOW",
             updatedWorkFlow: data
         })
+    setWorkFlowData(data)
     }
 
     const modifyStatus=(statusId,status)=>{
@@ -104,6 +108,7 @@ const WorkFlow = (props) => {
             type: "UPDATEWORKFLOW",
             updatedWorkFlow: data
         })
+        setWorkFlowData(data)
     }
 
     const cardClick=(id,name)=>{
@@ -115,7 +120,6 @@ const WorkFlow = (props) => {
         props.history.push('/create');
     }
 
-    console.log(WorkFlowData)
     return (
         <div>
             <Paper elevation={3} className={classes.mainBlock}>

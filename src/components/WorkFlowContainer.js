@@ -39,8 +39,10 @@ const WorkFlowContainer=(props)=>{
     const {data:{workFlowName,workFlowId,workFlowStatus,taskData},
     deleteData,modifyStatus,cardClick}=props;
 
-    const deleteClick=()=>{
+    const deleteClick=(event)=>{
+        event.preventDefault();
         deleteData(workFlowId);
+        event.stopPropagation();
     }
 
     const statusClick=(event)=>{
@@ -73,7 +75,7 @@ const WorkFlowContainer=(props)=>{
 
     return(
       <Paper className={classes.container} onClick={()=>workCardClick()} onMouseOver={()=>setShow("visible")} onMouseLeave={()=>setShow("hidden")}>
-          <HighlightOffIcon className={`${classes.delete} iconStyle`} visibility={show} onClick={()=>deleteClick()}/>
+          <HighlightOffIcon className={`${classes.delete} iconStyle`} visibility={show} onClick={(event)=>deleteClick(event)}/>
       <TextField
                 type="text"
                 disabled
