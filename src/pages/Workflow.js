@@ -35,21 +35,36 @@ const useStyles = makeStyles((theme) => ({
         height: '100px',
         padding: '24px',
         boxSizing: 'border-box',
-        display: 'flex'
+        display: 'flex',
+        flexWrap:'unset',
+        ["@media (max-width:475px)"]: {
+             height: 'unset' ,
+             flexWrap:'wrap',
+            }
     },
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
-        bottom: '10px'
+        bottom: '10px',
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%',
+            margin: theme.spacing(0),
+            marginTop:'24px'
+           }
     },
     create: {
         textTransform: 'capitalize',
         padding: '24px',
         backgroundColor: '#14bc50',
         marginLeft: 'auto',
+        width:'unset',
         '&:hover': {
             backgroundColor: '#14bc50'
-        }
+        },
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     container: {
         display: 'flex',

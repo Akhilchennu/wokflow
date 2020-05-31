@@ -22,12 +22,21 @@ const useStyles = makeStyles((theme) => ({
         padding: '24px',
         boxSizing: 'border-box',
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flexWrap:'unset',
+        ["@media (max-width:475px)"]: {
+            height: 'unset' ,
+            flexWrap:'wrap',
+           }
     },
     save: {
         height: '38px',
         textTransform: 'capitalize',
         margin: theme.spacing(1),
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     add: {
         height: '38px',
@@ -36,11 +45,19 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#14bc50',
         '&:hover': {
             backgroundColor: '#14bc50'
-        }
+        },
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     name: {
         marginRight: 'auto',
-        margin: theme.spacing(1)
+        margin: theme.spacing(1),
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     delete: {
         height: '38px',
@@ -49,7 +66,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#fd072a',
         '&:hover': {
             backgroundColor: '#fd072a'
-        }
+        },
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     shuffle: {
         height: '38px',
@@ -58,7 +79,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#7800b7',
         '&:hover': {
             backgroundColor: '#7800b7'
-        }
+        },
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     container: {
         display: 'flex',

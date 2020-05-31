@@ -11,7 +11,11 @@ const useStyles = makeStyles((theme) => ({
         width: '20%',
         padding: '0px 16px 16px',
         boxSizing: 'border-box',
-        margin: '16px'
+        margin: '16px',
+        width:'unset',
+        ["@media (max-width:475px)"]: {
+            width:'100%'
+           }
     },
     margintop: {
         marginTop: '16px'
