@@ -106,6 +106,15 @@ const WorkFlow = (props) => {
         })
     }
 
+    const cardClick=(id,name)=>{
+        dispatch({
+            type:"TASKDATA",
+            updatedWorkFlowId:id,
+            updatedWorkFlowname:name
+        })
+        props.history.push('/create');
+    }
+
     console.log(WorkFlowData)
     return (
         <div>
@@ -147,7 +156,8 @@ const WorkFlow = (props) => {
             {Object.keys(WorkFlowData).length>0?Object.keys(WorkFlowData).map((data,index)=>{
                    return <WorkFowContainer data={WorkFlowData[data]} key={WorkFlowData[data].workFlowId}
                     indexValue={index} deleteData={(deleteId)=>deleteData(deleteId)}
-                    modifyStatus={(statusId,status)=>modifyStatus(statusId,status)}/>
+                    modifyStatus={(statusId,status)=>modifyStatus(statusId,status)}
+                    cardClick={(id,name)=>cardClick(id,name)}/>
             }):
              <Nomessages message="Create WorkFlow" />}
              </div>

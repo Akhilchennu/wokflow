@@ -36,13 +36,15 @@ const WorkFlowContainer=(props)=>{
     const classes = useStyles();
 
     const [show,setShow]=useState("hidden");
-    const {data:{workFlowName,workFlowId,workFlowStatus,taskData},indexValue,deleteData,modifyStatus}=props;
+    const {data:{workFlowName,workFlowId,workFlowStatus,taskData},indexValue,
+    deleteData,modifyStatus,cardClick}=props;
 
     const deleteClick=()=>{
         deleteData(workFlowId);
     }
 
-    const statusClick=()=>{
+    const statusClick=(event)=>{
+        event.preventDefault();
         let status='PENDING'
         if(workFlowStatus === 'PENDING'){
             let  done=true;
@@ -62,10 +64,15 @@ const WorkFlowContainer=(props)=>{
         if(workFlowStatus !== status){
             modifyStatus(workFlowId,status);
         }
+        event.stopPropagation();
+    }
+
+    const workCardClick=()=>{
+       cardClick(workFlowId,workFlowName);
     }
 
     return(
-      <Paper className={classes.container} onMouseOver={()=>setShow("visible")} onMouseLeave={()=>setShow("hidden")}>
+      <Paper className={classes.container} onClick={()=>workCardClick()} onMouseOver={()=>setShow("visible")} onMouseLeave={()=>setShow("hidden")}>
           <HighlightOffIcon className={`${classes.delete} iconStyle`} visibility={show} onClick={()=>deleteClick()}/>
       <TextField
                 type="text"
@@ -77,7 +84,7 @@ const WorkFlowContainer=(props)=>{
             />
       <div className={classes.margintop}>
       <span>{workFlowStatus}</span>
-      <CheckCircleIcon className={`${classes[workFlowStatus]} floatStyle`} onClick={()=>statusClick()}/>
+      <CheckCircleIcon className={`${classes[workFlowStatus]} floatStyle`} onClick={(event)=>statusClick(event)}/>
       </div>
       </Paper>    
     );
